@@ -36,7 +36,7 @@ for Ticker in Tickers:
 StockPrice = pd.concat(dataset) #put stock prices of all tickers together in one table 
 StockPrice = StockPrice.reset_index(drop = True) #reser the index
 
-######################################################################################################################################################################
+**********************************************************************************************************************************************************************
 #Extract financial data from Reuters
 #Use of python code for web scrapping HTML codes
 
