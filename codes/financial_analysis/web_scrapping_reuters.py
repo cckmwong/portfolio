@@ -1,5 +1,3 @@
-#Extracting financial data from Reuters
-
 import requests  
 import pandas as pd
 from bs4 import BeautifulSoup 
@@ -16,10 +14,10 @@ for RIC in RICs:
 
     #look for html tag <dd> with specified classes   
     table_rows1 = soup.find_all("dd", {"class": "text__text__1FZLe text__dark-grey__3Ml43 text__medium__1kbOh text__body_fixed__1I7Al company-profile-maximizer__value__vLvbK"})
-    table_rows2 = soup.find_all("dd", {"class": "text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__body_fixed__1I7Al company-profile-maximizer__amount__1Ftq4"})
+    table_rows2 = soup.find_all("dd", {"class": "text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__small__1kGq2 company-profile-maximizer__amount__1Ftq4"})
     summary_data = pd.DataFrame(columns=["RIC", "Previous Close", "Open", "Volume", "3 Month Average Trading Volume", "Shares Out (Mil)", "Market Cap", "Forward P/E", "Dividend Yield", "P/E Excl. Extra Items (TTM)", "Price To Sales (TTM)", "Price To Book (Quarterly)", "Price To Cash Flow (Per Share TTM)", "Total Debt/Total Equity (Quarterly)", "Long Term Debt/Equity (Quarterly)", "Return On Investment (TTM)", "Return On Equity (TTM)"])
 
-    #extracting financial data from the above html code
+    #extracting relevant data from the above html code
     close = table_rows1[0].text
     open = table_rows1[1].text
     volume = table_rows1[2].text
