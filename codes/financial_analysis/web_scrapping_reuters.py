@@ -1,5 +1,6 @@
 import requests  
 import pandas as pd
+import re
 from bs4 import BeautifulSoup 
 
 RICs = ['TSCO.L', 'SBRY.L', '3382.T', 'CARR.PA', 'AXFO.ST', 'KR.N', 'WMT.N'] #ticker list
@@ -8,13 +9,14 @@ dataset = {} #create a dictionary for containing the financial summary data for 
 
 #iterate every ticker for webscrapping
 for RIC in RICs:
-    # request the HTML codes of a particular ticker
-    data = requests.get(f'https://www.reuters.com/markets/companies/{RIC}/').content
+    #request the HTML codes of a particular ticker via API
+    data = requests.get(f'http://api.scraperapi.com?api_key=ab037e18ebb50bc07cdb9ce0f2c991d2&url=https://www.reuters.com/markets/companies/{RIC}/').content
+    #data = requests.get(f'https://www.reuters.com/markets/companies/{RIC}/').content
     soup = BeautifulSoup(data, "html.parser")
 
-    #look for html tag <dd> with specified classes   
-    table_rows1 = soup.find_all("dd", {"class": "text__text__1FZLe text__dark-grey__3Ml43 text__medium__1kbOh text__body_fixed__1I7Al company-profile-maximizer__value__vLvbK"})
-    table_rows2 = soup.find_all("dd", {"class": "text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__small__1kGq2 company-profile-maximizer__amount__1Ftq4"})
+    #look for html tag <dd> with specified classes with the use of wildcard 
+    table_rows1 = soup.find_all("dd", {"class": re.compile('text__text__1FZLe text__dark-grey__3Ml43 text__medium__1kbOh*')})
+    table_rows2 = soup.find_all("dd", {"class": re.compile('text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr*')})
     summary_data = pd.DataFrame(columns=["RIC", "Previous Close", "Open", "Volume", "3 Month Average Trading Volume", "Shares Out (Mil)", "Market Cap", "Forward P/E", "Dividend Yield", "P/E Excl. Extra Items (TTM)", "Price To Sales (TTM)", "Price To Book (Quarterly)", "Price To Cash Flow (Per Share TTM)", "Total Debt/Total Equity (Quarterly)", "Long Term Debt/Equity (Quarterly)", "Return On Investment (TTM)", "Return On Equity (TTM)"])
 
     #extracting relevant data from the above html code
