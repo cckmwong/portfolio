@@ -34,6 +34,8 @@ indicators. Independent schools also did not release the related info in the tab
 the indicators. NULL values happen for certain Academy schools. We do not intend to replace
 any NA values for independent schools by the mean of the indicators, as the performance of 
 state schools and independent schools can be quite different. */
+
+-- check the schools with invalid KS4 results
 SELECT MINORGROUP, SCHNAME, ATT8SCR, PTEBACC_95, PTL2BASICS_95
 FROM
 (SELECT a.MINORGROUP, a.SCHNAME, b.ATT8SCR, b.PTL2BASICS_95, b.PTEBACC_95
