@@ -42,7 +42,7 @@ FROM
 FROM Portfolio.dbo.school_info a, Portfolio.dbo.ks4final b
 WHERE a.URN = b.URN) c
 WHERE ISNUMERIC(ATT8SCR) = 0
-ORDER by 1
+ORDER by 1 
 
 /* school_info table contains the ofsted rating and other basic info for all schools in England
 including primary, secondary and all-through schools */
@@ -65,6 +65,7 @@ CASE WHEN ISPRIMARY = 1 and ISSECONDARY = 0 THEN 'Primary'
 -- Create a new table namely school_performance, which record the ofsted ratings, school basic info,
 -- ks2 indicators and ks4 indicators for all mainstream schools in England. Corresponding 
 -- region names are mapped after joining with region_codes table.
+-- Academy, College, Independent schools and Maintained schools with "Open" status are included
 DROP Table if exists Portfolio.dbo.school_performance
 SELECT
 	a.URN, 
@@ -119,7 +120,7 @@ SELECT DISTINCT(MAT_AVERAGE)
 From Portfolio.dbo.school_performance
 Order by 1
 
--- Check null values of MAT_AVERAGE and replace any null values by the national average
+-- Replace any null values of MAT_AVERAGE by its national average
 UPDATE Portfolio.dbo.school_performance
 SET MAT_AVERAGE = (SELECT ROUND(AVG(MAT_AVERAGE), 0) as MAT_AVERAGE_ALL
 					FROM Portfolio.dbo.school_performance)
@@ -131,7 +132,7 @@ SELECT DISTINCT(GPS_AVERAGE)
 From Portfolio.dbo.school_performance
 Order by 1
 
--- Check null values of GPS_AVERAGE and replace any null values by the national average
+-- Replace any null values of GPS_AVERAGE by its national average
 UPDATE Portfolio.dbo.school_performance
 SET GPS_AVERAGE = (SELECT ROUND(AVG(GPS_AVERAGE), 0) as GPS_AVERAGE_ALL
 					FROM Portfolio.dbo.school_performance)
@@ -143,7 +144,7 @@ SELECT DISTINCT(READ_AVERAGE)
 From Portfolio.dbo.school_performance
 Order by 1
 
--- Check null values of READ_AVERAGE and replace any null values by the national average
+-- Replace any null values of READ_AVERAGE by its national average
 UPDATE Portfolio.dbo.school_performance
 SET READ_AVERAGE = (SELECT ROUND(AVG(READ_AVERAGE), 0) as READ_AVERAGE_ALL
 					FROM Portfolio.dbo.school_performance)
@@ -152,7 +153,12 @@ WHERE READ_AVERAGE is NULL and (SCHOOL_TYPE = 'Maintained school' or SCHOOL_TYPE
 
 /* Check and replace NULL values for KS4 performance indicators */
 
--- check null values of ATT8SCR and replace any null values by the national average
+-- There exist NULL values for ATT8SCR column.
+SELECT DISTINCT(ATT8SCR)
+FROM Portfolio.dbo.school_performance
+Order by 1
+
+-- Replace any null values of ATT8SCR by its national average
 UPDATE Portfolio.dbo.school_performance
 SET ATT8SCR = (SELECT ROUND(AVG(CONVERT(float, ATT8SCR)), 0) 
 				FROM Portfolio.dbo.school_performance
@@ -168,6 +174,12 @@ CASE WHEN CHARINDEX('%', PTL2BASICS_95) > 1 THEN SUBSTRING(PTL2BASICS_95, 1, CHA
 ELSE PTL2BASICS_95
 END
 
+-- There exist NULL values for PTL2BASICS_95 column
+SELECT DISTINCT(PTL2BASICS_95)
+FROM Portfolio.dbo.school_performance
+Order by 1
+
+-- Replace the null values of PTL2BASICS_95 by its national average
 UPDATE Portfolio.dbo.school_performance
 SET PTL2BASICS_95 = (SELECT AVG(CONVERT(int, PTL2BASICS_95))
 					FROM Portfolio.dbo.school_performance
@@ -183,6 +195,12 @@ CASE WHEN CHARINDEX('%', PTEBACC_95) > 1 THEN SUBSTRING(PTEBACC_95, 1, CHARINDEX
 ELSE PTEBACC_95
 END
 
+-- There exist NULL values for PTEBACC_95 column.
+SELECT DISTINCT(PTEBACC_95)
+FROM Portfolio.dbo.school_performance
+Order by 1
+
+-- Replace the null values of PTEBACC_95 by its national average
 UPDATE Portfolio.dbo.school_performance
 SET PTEBACC_95 = (SELECT AVG(CONVERT(int, PTEBACC_95))
 					FROM Portfolio.dbo.school_performance
@@ -190,11 +208,8 @@ SET PTEBACC_95 = (SELECT AVG(CONVERT(int, PTEBACC_95))
 FROM Portfolio.dbo.school_performance
 WHERE PTEBACC_95 IS NULL and (SCHOOL_TYPE = 'Maintained school' or SCHOOL_TYPE = 'Academy') and (SCHOOL_LEVEL = 'Secondary' or SCHOOL_LEVEL = 'All-through')
 
-
 /* Since there are some schools neither release ofsted rating nor its KS2/ KS4 performance,
 they are not very meaningful in the analysis and are to be removed */
---SELECT *
---FROM Portfolio.dbo.school_performance
 DELETE FROM Portfolio.dbo.school_performance
 WHERE OFSTEDRATING is NULL and ISNUMERIC(MAT_AVERAGE) = 0 and ISNUMERIC(ATT8SCR) = 0
 
@@ -266,10 +281,6 @@ SET KS4_Avg =
 CASE WHEN KS4 = 1 THEN ((CONVERT(float, ATT8SCR) + CONVERT(float, PTL2BASICS_95) + CONVERT(float, PTEBACC_95)))/ 3
 	ELSE 0
 END
-
---SELECT DISTINCT([REGION NAME])
---From Portfolio.dbo.school_performance
---ORDER By 1
 
 -- Remove ambiguity of region names in a consistent ways of official presentation as other datasets  
 UPDATE Portfolio.dbo.school_performance
