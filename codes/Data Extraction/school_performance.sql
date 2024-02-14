@@ -124,7 +124,6 @@ Order by 1
 UPDATE Portfolio.dbo.school_performance
 SET MAT_AVERAGE = (SELECT ROUND(AVG(MAT_AVERAGE), 0) as MAT_AVERAGE_ALL
 					FROM Portfolio.dbo.school_performance)
-FROM Portfolio.dbo.school_performance a
 WHERE MAT_AVERAGE is NULL and (SCHOOL_TYPE = 'Maintained school' or SCHOOL_TYPE = 'Academy') and (SCHOOL_LEVEL = 'Primary' or SCHOOL_LEVEL = 'All-through')
 
 -- There exist NULL values for GPS_AVERAGE column.
@@ -136,7 +135,6 @@ Order by 1
 UPDATE Portfolio.dbo.school_performance
 SET GPS_AVERAGE = (SELECT ROUND(AVG(GPS_AVERAGE), 0) as GPS_AVERAGE_ALL
 					FROM Portfolio.dbo.school_performance)
-FROM Portfolio.dbo.school_performance a
 WHERE GPS_AVERAGE is NULL and (SCHOOL_TYPE = 'Maintained school' or SCHOOL_TYPE = 'Academy') and (SCHOOL_LEVEL = 'Primary' or SCHOOL_LEVEL = 'All-through')
 
 -- There exist NULL values for READ_AVERAGE column.
@@ -148,7 +146,6 @@ Order by 1
 UPDATE Portfolio.dbo.school_performance
 SET READ_AVERAGE = (SELECT ROUND(AVG(READ_AVERAGE), 0) as READ_AVERAGE_ALL
 					FROM Portfolio.dbo.school_performance)
-FROM Portfolio.dbo.school_performance a
 WHERE READ_AVERAGE is NULL and (SCHOOL_TYPE = 'Maintained school' or SCHOOL_TYPE = 'Academy') and (SCHOOL_LEVEL = 'Primary' or SCHOOL_LEVEL = 'All-through')
 
 /* Check and replace NULL values for KS4 performance indicators */
@@ -163,7 +160,6 @@ UPDATE Portfolio.dbo.school_performance
 SET ATT8SCR = (SELECT ROUND(AVG(CONVERT(float, ATT8SCR)), 0) 
 				FROM Portfolio.dbo.school_performance
 				WHERE ISNUMERIC(ATT8SCR) = 1)
-FROM Portfolio.dbo.school_performance
 WHERE ATT8SCR IS NULL and (SCHOOL_TYPE = 'Maintained school' or SCHOOL_TYPE = 'Academy') and (SCHOOL_LEVEL = 'Secondary' or SCHOOL_LEVEL = 'All-through')
 
 -- check null values of PTL2BASICS_95 and replace any null values by the national average
@@ -184,7 +180,6 @@ UPDATE Portfolio.dbo.school_performance
 SET PTL2BASICS_95 = (SELECT AVG(CONVERT(int, PTL2BASICS_95))
 					FROM Portfolio.dbo.school_performance
 					WHERE ISNUMERIC(PTL2BASICS_95) = 1)
-FROM Portfolio.dbo.school_performance
 WHERE PTL2BASICS_95 IS NULL and (SCHOOL_TYPE = 'Maintained school' or SCHOOL_TYPE = 'Academy') and (SCHOOL_LEVEL = 'Secondary' or SCHOOL_LEVEL = 'All-through')
 
 -- check null values of PTEBACC_95 and replace any null values by the national average
@@ -205,7 +200,6 @@ UPDATE Portfolio.dbo.school_performance
 SET PTEBACC_95 = (SELECT AVG(CONVERT(int, PTEBACC_95))
 					FROM Portfolio.dbo.school_performance
 					WHERE ISNUMERIC(PTEBACC_95) = 1)
-FROM Portfolio.dbo.school_performance
 WHERE PTEBACC_95 IS NULL and (SCHOOL_TYPE = 'Maintained school' or SCHOOL_TYPE = 'Academy') and (SCHOOL_LEVEL = 'Secondary' or SCHOOL_LEVEL = 'All-through')
 
 /* Since there are some schools neither release ofsted rating nor its KS2/ KS4 performance,
