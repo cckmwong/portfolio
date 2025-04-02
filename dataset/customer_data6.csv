@@ -3409,7 +3409,7 @@ ID,Age,Gender,Marital Status,Income Level,Purchase History,Coverage,Premium,Educ
 3058,51,Male,Divorced,9127.892409,4/22/2022,35104.1,93.123,Associate Degree,Puducherry,Engineer,policy1,Chat,policy3,Family,Text,Mail,Weekends,German,4
 1169,47,Female,Divorced,10289.26942,10/29/2021,33040.7,147.054,Master's Degree,Karnataka,Salesperson,policy2,Email,policy2,Individual,Mail,Text,Evening,English,4
 715,48,Male,Separated,9266.991516,2/12/2021,32500,91.822,Master's Degree,Andaman and Nicobar Islands,Lawyer,policy1,In-Person,policy5,Business,Mail,In-Person Meeting,Afternoon,Spanish,4
-73,31,Male,FALSE,2912.730375,2/26/2023,12355.1,50.551,Associate Degree,Telangana,Salesperson,policy2,In-Person,policy4,Business,Mail,Mail,Anytime,Spanish,4
+73,31,Male,Married,2912.730375,2/26/2023,12355.1,50.551,Associate Degree,Telangana,Salesperson,policy2,In-Person,policy4,Business,Mail,Mail,Anytime,Spanish,4
 1733,40,Female,Divorced,8983.424208,8/7/2022,22410.4,100.717,Associate Degree,Andaman and Nicobar Islands,Salesperson,policy2,Chat,policy1,Individual,Email,Text,Morning,French,4
 1361,34,Male,Single,6326.031359,10/16/2023,18904.5,59.524,Associate Degree,Goa,Nurse,policy5,Email,policy1,Group,Email,Email,Morning,English,4
 1101,35,Male,Divorced,7702.644722,8/23/2023,48652.2,238.606,Bachelor's Degree,Mizoram,Entrepreneur,policy5,Phone,policy3,Business,Phone,Text,Evening,German,4
